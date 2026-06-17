@@ -1,0 +1,23 @@
+[project]
+name = "nudges"
+version = "0.1.0"
+description = "An app to remind me to do things on my laptop, without interfering with meetings"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "pyobjc>=12.2; platform_system == 'Darwin'",
+    "rumps>=0.4.0; platform_system == 'Darwin'",
+]
+
+[tool.uv]
+# Currently, only macOS is supported
+# TODO: Add Linux/Windows support if this turns out to be useful
+environments = ["sys_platform == 'darwin'"]
+
+[[tool.uv.index]]
+# Enable development on machines with other indexes (such as work laptops)
+name = "pypi"
+url = "https://pypi.org/simple"
+default = true
+# Enough with supply-chain attacks...
+exclude-newer = "P14D"
