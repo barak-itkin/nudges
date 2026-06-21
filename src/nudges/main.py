@@ -77,6 +77,10 @@ class NudgesApp(rumps.App):
         except Exception as e:
             self._set_error(f"Error checking busy status: {e}")
 
+    def alert_with_sound(self, title: str, message: str, **kwargs):
+        subprocess.Popen(['afplay', '/System/Library/Sounds/Glass.aiff'])
+        rumps.alert(title=title, message=message, **kwargs)
+
     def check_and_remind(self, _):
         try:
             self._check_if_busy_and_update_status()
@@ -84,7 +88,7 @@ class NudgesApp(rumps.App):
                 now = time.monotonic()
                 if now - self.last_notification_time > REMINDER_INTERVAL_SECONDS:
                     self.last_notification_time = now
-                    run_on_main_thread(lambda: rumps.alert(
+                    run_on_main_thread(lambda: self.alert_with_sound(
                         title="Nudge!",
                         message="Double-check your email, calendar, and Slack.",
                         ok="Got it!"
